@@ -7,6 +7,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Lab01_ASP.NETCoreWebAPI/Lab01_ASP.NETCoreWebAPI.csproj", "Lab01_ASP.NETCoreWebAPI/"]
+COPY ["BusinessObject/BusinessObject.csproj", "BusinessObject/"]
+COPY ["Repository/Repository.csproj", "Repository/"]
+COPY ["Services/Services.csproj", "Services/"]
 RUN dotnet restore "Lab01_ASP.NETCoreWebAPI/Lab01_ASP.NETCoreWebAPI.csproj"
 COPY . .
 WORKDIR "/src/Lab01_ASP.NETCoreWebAPI"

@@ -1,6 +1,7 @@
 ﻿services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
     user: root
     environment:
       ACCEPT_EULA: Y
@@ -20,11 +21,26 @@
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ConnectionStrings__DefaultConnection="Server=sqlserver:1433;Database=Lab01_ASP;User=sa;Password=Password12345;TrustServerCertificate=True"
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Lab01_ASP;User=sa;Password=Password12345;TrustServerCertificate=True;
     ports:
       - 5000:80
     depends_on:
       - sqlserver
+    networks:
+      - lab01_asp.netcorewebapi
+  
+  lab01_asp.webclient:
+    image: lab01_asp.webclient
+    build:
+      context: .
+      dockerfile: ProductManagementWebClient/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    ports:
+      - 5171:80
+    depends_on:
+      - lab01_asp.netcorewebapi
     networks:
       - lab01_asp.netcorewebapi
 volumes:
