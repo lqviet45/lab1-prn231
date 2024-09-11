@@ -10,9 +10,10 @@ namespace ProductManagementWebClient.Controllers;
 public class ProductController : Controller
 {
     private readonly HttpClient _httpClient;
-    private string _productApiUrl = "http://localhost:5000/api/Products";
-    private string _categoryApiUrl = "http://localhost:5000/api/Category";
-
+    private readonly string _productApiUrl = "http://lab01_aspnetcorewebapi-lab01_asp.netcorewebapi-1/api/Products";
+    private readonly string _categoryApiUrl = "http://lab01_aspnetcorewebapi-lab01_asp.netcorewebapi-1/api/Category";
+    // private readonly string _productApiUrl = "http://localhost:5000/api/Products";
+    // private readonly string _categoryApiUrl = "http://localhost:5000/api/Category";
     public ProductController()
     {
         _httpClient = new HttpClient();
@@ -56,7 +57,6 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Create()
     {
-
         var categories = await GetCategories();
 
         if (categories == null)
@@ -73,6 +73,10 @@ public class ProductController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(IFormCollection collection)
     {
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
         var categories = await GetCategories();
         
         if (categories == null)
@@ -161,6 +165,10 @@ public class ProductController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, IFormCollection collection)
     {
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
         var categories = await GetCategories();
 
         ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
