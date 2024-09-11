@@ -73,10 +73,6 @@ public class ProductController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(IFormCollection collection)
     {
-        if (!ModelState.IsValid)
-        {
-            return View();
-        }
         var categories = await GetCategories();
         
         if (categories == null)
@@ -86,6 +82,10 @@ public class ProductController : Controller
         
         ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
         
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
         var product = new Product
         {
             ProductName = collection["ProductName"],
@@ -165,14 +165,14 @@ public class ProductController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, IFormCollection collection)
     {
-        if (!ModelState.IsValid)
-        {
-            return View();
-        }
         var categories = await GetCategories();
 
         ViewBag.Categories = new SelectList(categories, "CategoryId", "CategoryName");
 
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
         var product = new Product
         {
             ProductId = id,
